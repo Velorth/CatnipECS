@@ -1,0 +1,16 @@
+{
+  "name": "com.velorth.ecs",
+  "version": "0.1.0",
+  "displayName": "CatnipECS",
+  "description": "ECS system",
+  "unity": "2022.2",
+  "unityRelease": "2f1",
+  "keywords": [
+  ],
+  "author": {
+    "name": "Velorth",
+    "email": "velorth.avelies@gmail.com"
+  },
+  "dependencies": {
+  }
+}
