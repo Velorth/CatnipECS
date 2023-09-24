@@ -355,14 +355,6 @@ namespace CatnipECS
             return collector;
         }
 
-        public void ClearCollectors()
-        {
-            foreach (var collector in _collectors.Values)
-            {
-                collector.Clear();
-            }
-        }
-
         public bool TryGetComponent<T>(Entity entity, out T data) where T: IComponentData
         {
             ref var entityData = ref _entitiesData[entity.Index];
@@ -576,10 +568,11 @@ namespace CatnipECS
 
         public void Initialize(ref SystemState state)
         {
-
             if (_collector.HasEntities())
             {
-                _system.OnExecute(ref state, _collector.Get());
+                using var affectedEntities = _collector.Get();
+                _collector.Clear();
+                _system.OnExecute(ref state, affectedEntities);
             }
         }
 
@@ -587,7 +580,9 @@ namespace CatnipECS
         {
             if (_collector.HasEntities())
             {
-                _system.OnExecute(ref state, _collector.Get());
+                using var affectedEntities = _collector.Get();
+                _collector.Clear();
+                _system.OnExecute(ref state, affectedEntities);
             }
         }
     }

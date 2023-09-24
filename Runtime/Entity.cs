@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Unity.Collections;
 using UnityEngine;
 
 namespace CatnipECS
@@ -72,7 +73,7 @@ namespace CatnipECS
     {
         Trigger Trigger { get; }
 
-        void OnExecute(ref SystemState state, Group affectedEntities);
+        void OnExecute(ref SystemState state, NativeArray<Entity> affectedEntities);
     }
 
     public interface ITearDownSystem : ISystem

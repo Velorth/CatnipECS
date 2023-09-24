@@ -1,22 +1,32 @@
+using System.Collections.Generic;
+using Unity.Collections;
+
 namespace CatnipECS
 {
     public class Collector : IGroupEventListener
     {
         private readonly World _world;
         private readonly Trigger _trigger;
-        private Group _group;
-        private GroupData _groupData;
+        private readonly HashSet<Entity> _data = new();
 
-        public Group Get() => _group;
+        public NativeArray<Entity> Get()
+        {
+            var buffer = new NativeArray<Entity>(_data.Count, Allocator.Temp);
+            var index = 0;
+            foreach (var entity in _data)
+            {
+                buffer[index++] = entity;
+            }
 
-        public bool HasEntities() => !_groupData.IsEmpty;
+            return buffer;
+        }
+
+        public bool HasEntities() => _data.Count > 0;
 
         public Collector(World world, Trigger trigger)
         {
             _world = world;
             _trigger = trigger;
-            _groupData = new GroupData(world, trigger.Matcher);
-            _group = new Group(_groupData);
         }
 
         public void OnEntityAdded(Entity entity)
@@ -33,16 +43,16 @@ namespace CatnipECS
         {
             if (!_trigger.Event.HasFlag(eventFilter))
             {
-                _groupData.Remove(entity);
+                _data.Remove(entity);
                 return;
             }
 
-            _groupData.Add(entity);
+            _data.Add(entity);
         }
 
         public void Clear()
         {
-            _groupData.Clear();
+            _data.Clear();
         }
     }
 }

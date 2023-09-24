@@ -43,6 +43,8 @@ namespace CatnipECS
 
         public void Add(T element) => _data.Add(element);
 
+        public void Clear() => _data.Clear();
+
         public void RemoveAt(int index) => _data.RemoveAt(index);
 
         public void Initialize()

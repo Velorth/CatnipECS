@@ -73,8 +73,6 @@ namespace CatnipECS
                     Debug.LogException(e);
                 }
             }
-            
-            _world.ClearCollectors();
         }
 
         public void TearDown()
