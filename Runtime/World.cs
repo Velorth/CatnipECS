@@ -634,5 +634,44 @@ namespace CatnipECS
             where T3 : IComponentData
             where T4 : IComponentData =>
             world.GetGroup(new Matcher(TypesSet<T1, T2, T3, T4>.Id, 0, 0));
+        
+        public static Group Query<T1, T2, T3, T4, T5>(this World world)
+            where T1 : IComponentData
+            where T2 : IComponentData
+            where T3 : IComponentData
+            where T4 : IComponentData 
+            where T5 : IComponentData =>
+            world.GetGroup(new Matcher(TypesSet<T1, T2, T3, T4, T5>.Id, 0, 0));
+        
+        
+
+        public static void Query<T>(this World world, List<Entity> buf) where T : IComponentData =>
+            world.GetGroup(new Matcher(TypesSet<T>.Id, 0, 0), buf);
+
+        public static void Query<T1, T2>(this World world, List<Entity> buf)
+            where T1 : IComponentData
+            where T2 : IComponentData =>
+            world.GetGroup(new Matcher(TypesSet<T1, T2>.Id, 0, 0), buf);
+        
+        public static void Query<T1, T2, T3>(this World world, List<Entity> buf)
+            where T1 : IComponentData
+            where T2 : IComponentData
+            where T3 : IComponentData =>
+            world.GetGroup(new Matcher(TypesSet<T1, T2, T3>.Id, 0, 0), buf);
+        
+        public static void Query<T1, T2, T3, T4>(this World world, List<Entity> buf)
+            where T1 : IComponentData
+            where T2 : IComponentData
+            where T3 : IComponentData
+            where T4 : IComponentData =>
+            world.GetGroup(new Matcher(TypesSet<T1, T2, T3, T4>.Id, 0, 0), buf);
+        
+        public static void Query<T1, T2, T3, T4, T5>(this World world, List<Entity> buf)
+            where T1 : IComponentData
+            where T2 : IComponentData
+            where T3 : IComponentData
+            where T4 : IComponentData 
+            where T5 : IComponentData =>
+            world.GetGroup(new Matcher(TypesSet<T1, T2, T3, T4, T5>.Id, 0, 0), buf);
     }
 }
