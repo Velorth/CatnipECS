@@ -52,4 +52,18 @@ namespace CatnipECS
             _data = new List<T>();
         }
     }
+
+    public static class DynamicBufferExt
+    {
+        public static bool Contains<T>(this DynamicBuffer<T> buffer, T value) where T : IBufferElementData, IEquatable<T>
+        {
+            foreach (var item in buffer)
+            {
+                if (item.Equals(value))
+                    return true;
+            }
+
+            return false;
+        } 
+    }
 }

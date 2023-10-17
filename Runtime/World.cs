@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using UnityEngine;
 using UnityEngine.Pool;
 
 namespace CatnipECS
@@ -184,9 +183,19 @@ namespace CatnipECS
             }
         }
 
+        public bool HasBuffer<T>(Entity entity) where T : IBufferElementData =>
+            HasComponent<DynamicBuffer<T>>(entity);
+
         public ref DynamicBuffer<T> GetBuffer<T>(Entity entity) where T : IBufferElementData
         {
             return ref GetComponent<DynamicBuffer<T>>(entity);
+        }
+
+        public ref DynamicBuffer<T> GetOrCreateBuffer<T>(Entity entity) where T : IBufferElementData
+        {
+            if (HasBuffer<T>(entity))
+                return ref GetBuffer<T>(entity);
+            return ref AddBuffer<T>(entity);
         }
 
         public ref DynamicBuffer<T> AddBuffer<T>(Entity entity) where T : IBufferElementData
