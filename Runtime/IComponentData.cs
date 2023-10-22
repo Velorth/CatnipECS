@@ -51,6 +51,11 @@ namespace CatnipECS
         {
             _data = new List<T>();
         }
+
+        public void RemoveAt(Index index)
+        {
+            _data.RemoveAt(index.GetOffset(_data.Count));
+        }
     }
 
     public static class DynamicBufferExt
