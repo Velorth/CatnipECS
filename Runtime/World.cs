@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace CatnipECS
@@ -118,6 +119,22 @@ namespace CatnipECS
             
             var dataContainer = GetDataContainer<T>();
             return ref dataContainer.Get(entityData.ComponentValues[componentIndex]);
+        }
+
+        public void ReplaceComponent<T>(Entity entity, T component) where T : IComponentData
+        {
+            ref var entityData = ref _entitiesData[entity.Index];
+            
+            if (entityData.Generation != entity.Generation)
+                throw new EntityDestroyedException(entity);
+            
+            var componentIndex = entityData.FindComponentIndex<T>();
+            if (componentIndex == -1)
+                throw new MissingComponentException("There is no component to replace");
+
+            var dataContainer = GetDataContainer<T>();
+            var dataIndex = entityData.ComponentValues[componentIndex];
+            dataContainer.Set(dataIndex, ref component);
         }
 
         public ref T AddComponent<T>(Entity entity) where T : IComponentData => ref AddComponent<T>(entity, default);
