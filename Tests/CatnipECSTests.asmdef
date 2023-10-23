@@ -1,0 +1,18 @@
+{
+    "name": "SimpleECSTests",
+    "rootNamespace": "CatnipECS",
+    "references": [
+        "GUID:04ec075ca76d3488b86839d41d71fbf7"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
