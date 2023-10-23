@@ -1,7 +1,4 @@
-using System;
 using NUnit.Framework;
-using CatnipECS.Sample;
-using UnityEngine;
 
 namespace SimpleECSTests
 {
@@ -33,6 +30,21 @@ namespace SimpleECSTests
             feature.Initialize();
             feature.Execute();
             feature.TearDown();
+        }
+    }
+
+    internal struct PositionComponent : IComponentData
+    {
+    }
+
+    internal struct VelocityComponent : IComponentData
+    {
+    }
+
+    internal struct MoveSystem : IExecuteSystem
+    {
+        public void OnExecute(ref SystemState state)
+        {
         }
     }
 }
