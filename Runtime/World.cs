@@ -449,7 +449,7 @@ namespace CatnipECS
                 ref var entityData = ref _entitiesData[entityIndex];
                 var componentTypes = entityData.ComponentTypes;
                 
-                for (var componentIndex = 0; componentIndex < componentTypes.Length; ++componentIndex)
+                for (var componentIndex = 0; componentIndex < entityData.ComponentsCount; ++componentIndex)
                 {
                     componentTypes[componentIndex] = typeIndexMap[componentTypes[componentIndex]];
                 }
