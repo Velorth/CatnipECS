@@ -44,6 +44,13 @@ namespace CatnipECS
         }
     }
 
+    public class ComponentNotFoundException : Exception
+    {
+        public ComponentNotFoundException(Entity entity) : base("Entity has no required component.")
+        {
+        }
+    }
+
     public ref struct SystemState
     {
         public readonly World World;

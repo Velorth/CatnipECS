@@ -116,9 +116,7 @@ namespace CatnipECS
             
             var componentIndex = entityData.FindComponentIndex<T>();
             if (componentIndex == -1)
-            {
-                return ref CreateComponent<T>(entity, ref entityData);
-            }
+                throw new ComponentNotFoundException(entity);
             
             var dataContainer = GetDataContainer<T>();
             return ref dataContainer.Get(entityData.ComponentValues[componentIndex]);
