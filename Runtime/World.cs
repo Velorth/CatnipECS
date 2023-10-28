@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -7,6 +9,7 @@ using UnityEngine.Pool;
 namespace CatnipECS
 {
     [Serializable]
+    [DebuggerTypeProxy(typeof(WorldDebugProxy))]
     public class World : IDisposable, ISerializable
     {
         private IComponentDataContainer[] _componentDataContainers = new IComponentDataContainer[64];
@@ -532,6 +535,41 @@ namespace CatnipECS
             ListPool<EntityData>.Release(entitiesBuf);
             ListPool<int>.Release(typesBuf);
             ListPool<int>.Release(valuesBuf);
+        }
+        
+        internal struct WorldDebugProxy
+        {
+            public EntityDebugData[] Entities;
+            private readonly World _world;
+
+            public WorldDebugProxy(World world)
+            {
+                _world = world;
+                Entities = world._entitiesData.Take(world._entitiesCount)
+                    .Select(data => new EntityDebugData
+                    {
+                        Components = GetBoxedComponents(world, data)
+                    }).ToArray();
+            }
+
+            private static object[] GetBoxedComponents(World world, EntityData entityData)
+            {
+                var result = new object[entityData.ComponentsCount];
+                for (var componentIndex = 0; componentIndex < entityData.ComponentsCount; ++componentIndex)
+                {
+                    var typeIndex = entityData.ComponentTypes[componentIndex];
+                    var dataContainer = world._componentDataContainers[typeIndex];
+                    var dataIndex = entityData.ComponentValues[componentIndex];
+                    result[componentIndex] = dataContainer.GetBoxedComponent(dataIndex);
+                }
+
+                return result;
+            }
+        }
+        
+        internal struct EntityDebugData
+        {
+            public object[] Components;
         }
     }
 

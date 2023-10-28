@@ -11,7 +11,7 @@ namespace CatnipECS
     }
 
     [Serializable]
-    internal struct Disabled : IComponentData
+    public struct Disabled : IComponentData
     {
     }
 

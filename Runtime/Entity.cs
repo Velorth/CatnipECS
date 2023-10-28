@@ -95,6 +95,14 @@ namespace CatnipECS
         /// </summary>
         /// <param name="index">Index of data to destroy</param>
         void Destroy(int index);
+
+        /// <summary>
+        /// Gets the value of the component.
+        /// This method is designed for debug purposes and causes boxing of value type components.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        object GetBoxedComponent(int index);
     }
 
     internal interface IComponentDataContainer<T> : IComponentDataContainer where T : IComponentData
@@ -135,6 +143,8 @@ namespace CatnipECS
             ArrayUtility.EnsureSize(ref _thrash, _thrashedCount);
             _thrash[_thrashedCount - 1] = index;
         }
+
+        object IComponentDataContainer.GetBoxedComponent(int index) => Get(index);
 
         public ref T Get(int index)
         {

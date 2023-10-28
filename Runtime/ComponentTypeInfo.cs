@@ -6,7 +6,8 @@ namespace CatnipECS
 {
     internal static class ComponentTypeInfo
     {
-        private static Dictionary<Type, int> _typeIndexes = new();
+        private static readonly Dictionary<Type, int> TypeToIndexMap = new();
+        private static Dictionary<int, Type> IndexToTypeMap = new();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GetTypeIndex<T>() where T: IComponentData
@@ -16,11 +17,12 @@ namespace CatnipECS
 
         public static int GetTypeIndex(Type type)
         {
-            if (_typeIndexes.TryGetValue(type, out var index))
+            if (TypeToIndexMap.TryGetValue(type, out var index))
                 return index;
 
-            index = _typeIndexes.Count + 1;
-            _typeIndexes.Add(type, index);
+            index = TypeToIndexMap.Count + 1;
+            TypeToIndexMap.Add(type, index);
+            IndexToTypeMap.Add(index, type);
             return index;
         }
         
@@ -34,6 +36,11 @@ namespace CatnipECS
             {
                 TypeIndex = GetTypeIndex(typeof(T));
             }
+        }
+
+        public static Type GetTypeByIndex(int typeIndex)
+        {
+            return IndexToTypeMap[typeIndex];
         }
     }
 }
