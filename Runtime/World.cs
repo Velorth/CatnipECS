@@ -246,11 +246,23 @@ namespace CatnipECS
             return entity;
         }
 
+        public bool HasSingleton<T>() where T : IComponentData
+        {
+            var group = GetGroup(new Matcher(TypesSet<T>.Id, 0, 0));
+            return !group.IsEmpty;
+        }
+
         public T GetSingleton<T>() where T : IComponentData
         {
             var group = GetGroup(new Matcher(TypesSet<T>.Id, 0, 0));
             var entity = group.GetSingleEntity();
             return GetComponent<T>(entity);
+        }
+
+        public void SetSingleton<T>(T data) where T : IComponentData
+        {
+            var group = GetGroup(new Matcher(TypesSet<T>.Id, 0, 0));
+            SetComponent(group.GetSingleEntity(), data);
         }
 
         private void OnEntityChanged(Entity entity, ref EntityData entityData, int componentTypeIndex)
@@ -399,6 +411,29 @@ namespace CatnipECS
             var dataContainer = GetDataContainer<T>();
             data = dataContainer.Get(entityData.ComponentValues[componentIndex]);
             return true;
+        }
+
+        public void SetComponent<T>(Entity entity, T data) where T : IComponentData
+        {
+            ref var entityData = ref _entitiesData[entity.Index];
+            
+            if (entityData.Generation != entity.Generation)
+                throw new EntityDestroyedException(entity);
+            
+            var dataContainer = GetDataContainer<T>();
+            var componentIndex = entityData.FindComponentIndex<T>();
+            if (componentIndex == -1)
+            {
+                var dataIndex = dataContainer.Create();
+                dataContainer.Set(dataIndex, ref data);
+            
+                entityData.AddComponent(componentIndex, dataIndex);
+            }
+            else
+            {
+                var dataIndex = entityData.ComponentValues[componentIndex];
+                dataContainer.Set(dataIndex, ref data);   
+            }
         }
 
         public void Dispose()

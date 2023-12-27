@@ -8,6 +8,8 @@ namespace CatnipECS
     {
         private readonly GroupData _data;
 
+        public bool IsEmpty => _data.IsEmpty;
+
         internal Group(GroupData data)
         {
             _data = data;
